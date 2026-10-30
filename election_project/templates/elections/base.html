@@ -1,0 +1,99 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Election Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 65px);
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #172554;
+            padding: 20px 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover {
+            background: #2563eb;
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            min-width: 0;
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .content {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        🗳️ Village Election Management System
+    </header>
+
+    <div class="layout">
+        <nav class="sidebar">
+            <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+            <a href="{% url 'voter_list' %}">👥 Voters</a>
+            <a href="{% url 'candidate_list' %}">🧑‍💼 Candidates</a>
+            <a href="{% url 'village_list' %}">🏘️ Villages</a>
+            <a href="{% url 'statistics' %}">📊 Statistics</a>
+            <a href="{% url 'reports' %}">📑 Reports</a>
+            <a href="{% url 'voting' %}">🗳️ Voting</a>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        </nav>
+
+        <main class="content">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+</html>
+```

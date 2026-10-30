@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Election Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 245px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, #142b49, #1e3a5f);
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .brand {
+            font-size: 19px;
+            font-weight: bold;
+            line-height: 1.5;
+            padding: 0 10px 28px;
+            border-bottom: 1px solid #ffffff25;
+        }
+
+        .brand small {
+            display: block;
+            font-size: 12px;
+            font-weight: normal;
+            color: #cbd5e1;
+            margin-top: 5px;
+        }
+
+        .nav-links {
+            margin-top: 25px;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 7px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            background: white;
+            padding: 19px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px #0000000a;
+        }
+
+        .topbar h2 {
+            color: #17365d;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            padding: 10px 17px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #17365d;
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* STATISTICS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            padding: 22px;
+            border-radius: 11px;
+            color: white;
+            box-shadow: 0 5px 15px #00000012;
+            min-height: 135px;
+        }
+
+        .stat-card .icon {
+            font-size: 25px;
+            margin-bottom: 13px;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card p {
+            font-size: 29px;
+            font-weight: bold;
+        }
+
+        .blue {
+            background: linear-gradient(135deg, #2585f5, #1764d8);
+        }
+
+        .green {
+            background: linear-gradient(135deg, #18b777, #09965c);
+        }
+
+        .purple {
+            background: linear-gradient(135deg, #8b5cf6, #7040d4);
+        }
+
+        .orange {
+            background: linear-gradient(135deg, #f59e0b, #e4770b);
+        }
+
+        .section-title {
+            color: #17365d;
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        /* MANAGEMENT CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 11px;
+            border-top: 4px solid #2563eb;
+            box-shadow: 0 4px 14px #0000000b;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px #00000012;
+        }
+
+        .card .icon {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #17365d;
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.7;
+            min-height: 70px;
+        }
+
+        .open-link {
+            display: inline-block;
+            margin-top: 15px;
+            background: #2563eb;
+            color: white;
+            padding: 10px 14px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .open-link:hover {
+            opacity: 0.88;
+        }
+
+        .village-card {
+            border-top-color: #16a34a;
+        }
+
+        .village-link {
+            background: #16a34a;
+        }
+
+        .candidate-card {
+            border-top-color: #8b5cf6;
+        }
+
+        .candidate-link {
+            background: #7c3aed;
+        }
+
+        .report-card {
+            border-top-color: #f59e0b;
+        }
+
+        .report-link {
+            background: #ea580c;
+        }
+
+        .voting-card {
+            border-top-color: #0d9488;
+        }
+
+        .voting-link {
+            background: #0d9488;
+        }
+
+        footer {
+            margin-top: 35px;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .brand {
+                padding-bottom: 15px;
+            }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                margin-top: 15px;
+            }
+
+            .nav-links a {
+                margin: 0;
+                padding: 10px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .topbar {
+                padding: 17px;
+            }
+
+            .welcome h1 {
+                font-size: 23px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            🏛️ Village Election
+            <small>Management System</small>
+        </div>
+
+        <nav class="nav-links">
+            <a href="{% url 'dashboard' %}" class="active">
+                🏠 Dashboard
+            </a>
+
+            <a href="{% url 'voters' %}">
+                👥 Voters
+            </a>
+
+            <a href="{% url 'candidates' %}">
+                🗳️ Candidates
+            </a>
+
+            <a href="{% url 'voting' %}">
+                ✅ Vote Now
+            </a>
+
+            <a href="{% url 'villages' %}">
+                🏘️ Villages
+            </a>
+
+            <a href="{% url 'statistics' %}">
+                📊 Statistics
+            </a>
+
+            <a href="{% url 'reports' %}">
+                📄 Reports
+            </a>
+        </nav>
+
+        <form action="{% url 'logout' %}" method="post"
+              style="margin-top: 25px; padding: 0 10px;">
+            {% csrf_token %}
+
+            <button type="submit" class="logout-btn"
+                    style="width: 100%;">
+                ↪ Logout
+            </button>
+        </form>
+
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="main">
+
+        <header class="topbar">
+            <div>
+                <h2>Village Election Management System</h2>
+                <p>
+                    Digital platform for village election administration
+                </p>
+            </div>
+        </header>
+
+        <main class="content">
+
+            <!-- WELCOME -->
+            <section class="welcome">
+                <h1>Welcome to Dashboard 👋</h1>
+
+                <p>
+                    Manage village information, voter details, candidates
+                    and election records from one centralized dashboard.
+                </p>
+            </section>
+
+            <!-- STATISTICS -->
+            <section class="stats">
+
+                <div class="stat-card blue">
+                    <div class="icon">👥</div>
+                    <h3>Total Voters</h3>
+                    <p>{{ voter_count|default:"0" }}</p>
+                </div>
+
+                <div class="stat-card green">
+                    <div class="icon">🗳️</div>
+                    <h3>Total Candidates</h3>
+                    <p>{{ candidate_count|default:"0" }}</p>
+                </div>
+
+                <div class="stat-card purple">
+                    <div class="icon">🏘️</div>
+                    <h3>Total Villages</h3>
+                    <p>{{ village_count|default:"0" }}</p>
+                </div>
+
+                <div class="stat-card orange">
+                    <div class="icon">⚙️</div>
+                    <h3>Election System</h3>
+                    <p style="font-size: 23px;">Active</p>
+                </div>
+
+            </section>
+
+            <!-- MANAGEMENT SECTIONS -->
+            <h2 class="section-title">Management Sections</h2>
+
+            <section class="cards">
+
+                <!-- VILLAGES -->
+                <div class="card village-card">
+                    <div class="icon">🏘️</div>
+
+                    <h3>Village Details</h3>
+
+                    <p>
+                        Add and manage village names, district, mandal
+                        and population details.
+                    </p>
+
+                    <a class="open-link village-link"
+                       href="{% url 'villages' %}">
+                        Manage Villages →
+                    </a>
+                </div>
+
+                <!-- VOTERS -->
+                <div class="card">
+                    <div class="icon">👥</div>
+
+                    <h3>Voter Details</h3>
+
+                    <p>
+                        Register voters and manage voter IDs, names,
+                        ages, villages and contact numbers.
+                    </p>
+
+                    <a class="open-link" href="{% url 'voters' %}">
+                        Manage Voters →
+                    </a>
+                </div>
+
+                <!-- CANDIDATES -->
+                <div class="card candidate-card">
+                    <div class="icon">🗳️</div>
+
+                    <h3>Candidate Details</h3>
+
+                    <p>
+                        Register candidates and manage candidate IDs,
+                        party names, villages and election symbols.
+                    </p>
+
+                    <a class="open-link candidate-link"
+                       href="{% url 'candidates' %}">
+                        Manage Candidates →
+                    </a>
+                </div>
+
+                <!-- VOTING -->
+                <div class="card voting-card">
+                    <div class="icon">✅</div>
+
+                    <h3>Cast Your Vote</h3>
+
+                    <p>
+                        Enter your Voter ID, select your preferred
+                        candidate and submit your vote.
+                    </p>
+
+                    <a class="open-link voting-link"
+                       href="{% url 'voting' %}">
+                        Vote Now →
+                    </a>
+                </div>
+
+                <!-- STATISTICS -->
+                <div class="card">
+                    <div class="icon">📊</div>
+
+                    <h3>Election Statistics</h3>
+
+                    <p>
+                        View the total number of registered voters,
+                        candidates and villages.
+                    </p>
+
+                    <a class="open-link"
+                       href="{% url 'statistics' %}">
+                        View Statistics →
+                    </a>
+                </div>
+
+                <!-- REPORTS -->
+                <div class="card report-card">
+                    <div class="icon">📄</div>
+
+                    <h3>Election Reports</h3>
+
+                    <p>
+                        View election records and download voter,
+                        candidate and village reports as CSV files.
+                    </p>
+
+                    <a class="open-link report-link"
+                       href="{% url 'reports' %}">
+                        Open Reports →
+                    </a>
+                </div>
+
+            </section>
+
+            <footer>
+                © 2026 Village Election Management System |
+                All Rights Reserved
+            </footer>
+
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

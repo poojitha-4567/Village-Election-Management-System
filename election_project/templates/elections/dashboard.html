@@ -1,0 +1,99 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .page-title {
+        color: #1e3a8a;
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    .welcome {
+        color: #64748b;
+        margin-bottom: 28px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 24px;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #2563eb;
+    }
+
+    .card h3 {
+        margin-top: 0;
+        color: #475569;
+        font-size: 17px;
+    }
+
+    .card .number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #1d4ed8;
+        margin: 12px 0;
+    }
+
+    .card a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .card a:hover {
+        text-decoration: underline;
+    }
+
+    .voting-card {
+        border-left-color: #16a34a;
+    }
+
+    .voting-card .number {
+        color: #15803d;
+    }
+</style>
+
+<h1 class="page-title">Dashboard</h1>
+
+<p class="welcome">
+    Welcome to the Village Election Management System.
+    Manage voters, candidates, villages and demo voting here.
+</p>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>👥 Voters</h3>
+        <p class="number">{{ total_voters|default:0 }}</p>
+        <a href="{% url 'voter_list' %}">View Voters →</a>
+    </div>
+
+    <div class="card">
+        <h3>🧑‍💼 Candidates</h3>
+        <p class="number">{{ total_candidates|default:0 }}</p>
+        <a href="{% url 'candidate_list' %}">View Candidates →</a>
+    </div>
+
+    <div class="card">
+        <h3>🏘️ Villages</h3>
+        <p class="number">{{ total_villages|default:0 }}</p>
+        <a href="{% url 'village_list' %}">View Villages →</a>
+    </div>
+
+    <div class="card voting-card">
+        <h3>🗳️ Voting</h3>
+        <p class="number">Vote</p>
+        <a href="{% url 'voting' %}">Open Voting Page →</a>
+    </div>
+
+</div>
+
+{% endblock %}

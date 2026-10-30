@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Voter | VillageElect</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            background: #0f172a;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0 10px 35px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .nav-title {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 20px 10px 10px;
+            text-transform: uppercase;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 12px;
+            border-radius: 7px;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .topbar p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .user-badge {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 9px;
+            box-shadow: 0 3px 12px #00000008;
+            font-size: 14px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .breadcrumb a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .panel {
+            max-width: 900px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000008;
+        }
+
+        .panel h2 {
+            color: #0f172a;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .voter-info {
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #1e40af;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #2563eb20;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px;
+            margin-bottom: 10px;
+            border-radius: 7px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 14px;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 19px;
+            border: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .update-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .update-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .back-btn:hover {
+            background: #cbd5e1;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .brand {
+                margin-bottom: 15px;
+            }
+
+            .sidebar a {
+                display: inline-block;
+                margin: 3px;
+            }
+
+            .nav-title {
+                display: none;
+            }
+
+            .main {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">Village<span>Elect</span></div>
+
+        <div class="nav-title">Main Menu</div>
+        <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'voters' %}" class="active">👥 Voter Management</a>
+        <a href="{% url 'candidates' %}">🗳️ Candidate Management</a>
+        <a href="{% url 'villages' %}">🏘️ Village Management</a>
+
+        <div class="nav-title">Analytics</div>
+        <a href="{% url 'statistics' %}">📊 Statistics</a>
+        <a href="{% url 'reports' %}">📄 Reports</a>
+
+        <div class="nav-title">Account</div>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Edit Voter</h1>
+                <p>Update the registered voter information.</p>
+            </div>
+
+            <div class="user-badge">👥 Voter Administration</div>
+        </header>
+
+        <div class="breadcrumb">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            /
+            <a href="{% url 'voters' %}">Voter Management</a>
+            / Edit Voter
+        </div>
+
+        <section class="panel">
+            <h2>✏️ Edit Voter Details</h2>
+
+            <p class="description">
+                Update the voter information below and click Update Voter
+                to save your changes.
+            </p>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {% if message.tags == 'error' %}error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="voter-info">
+                👤 You are editing voter:
+                <strong>{{ voter.full_name }}</strong>
+                ({{ voter.voter_id }})
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="voter_id">Voter ID</label>
+                        <input
+                            type="text"
+                            id="voter_id"
+                            name="voter_id"
+                            value="{{ voter.voter_id }}"
+                            placeholder="Enter voter ID"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="full_name">Full Name</label>
+                        <input
+                            type="text"
+                            id="full_name"
+                            name="full_name"
+                            value="{{ voter.full_name }}"
+                            placeholder="Enter full name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            value="{{ voter.age }}"
+                            min="18"
+                            placeholder="Enter age"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="village">Village</label>
+                        <input
+                            type="text"
+                            id="village"
+                            name="village"
+                            value="{{ voter.village }}"
+                            placeholder="Enter village"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value="{{ voter.phone }}"
+                            placeholder="Enter phone number"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+                    <button type="submit" class="btn update-btn">
+                        Update Voter
+                    </button>
+
+                    <a href="{% url 'voters' %}" class="btn back-btn">
+                        Cancel / Back to Voters
+                    </a>
+                </div>
+            </form>
+        </section>
+
+    </main>
+</div>
+</body>
+</html>

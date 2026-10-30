@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Management</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: #0f172a;
+            color: white;
+            padding: 25px 15px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0 10px 35px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .nav-title {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 20px 10px 10px;
+            text-transform: uppercase;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 12px;
+            border-radius: 7px;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .topbar h1 {
+            font-size: 27px;
+            margin-bottom: 7px;
+        }
+
+        .topbar p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .user-badge {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 9px;
+            box-shadow: 0 3px 12px #00000008;
+            font-size: 14px;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px #00000008;
+        }
+
+        .panel h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #2563eb18;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .secondary:hover {
+            background: #475569;
+        }
+
+        .edit-btn {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 7px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 14px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-form input {
+            max-width: 380px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .delete-form {
+            margin: 0;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .page-links {
+            display: flex;
+            gap: 7px;
+        }
+
+        .page-links a,
+        .page-links span {
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .page-links .current {
+            background: #2563eb;
+            color: white;
+        }
+
+        @media (max-width: 850px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .brand {
+                margin-bottom: 15px;
+            }
+
+            .sidebar a {
+                display: inline-block;
+                margin: 3px;
+            }
+
+            .nav-title {
+                display: none;
+            }
+
+            .main {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form input {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">Village<span>Elect</span></div>
+
+        <div class="nav-title">Main Menu</div>
+        <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'voters' %}">👥 Voter Management</a>
+        <a href="{% url 'candidates' %}">🗳️ Candidate Management</a>
+        <a href="{% url 'villages' %}" class="active">🏘️ Village Management</a>
+
+        <div class="nav-title">Analytics</div>
+        <a href="{% url 'statistics' %}">📊 Statistics</a>
+        <a href="{% url 'reports' %}">📄 Reports</a>
+
+        <div class="nav-title">Account</div>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Village Management</h1>
+                <p>Add, search and manage village information.</p>
+            </div>
+            <div class="user-badge">🏘️ Village Administration</div>
+        </header>
+
+        <!-- ADD VILLAGE -->
+        <section class="panel">
+            <h2>➕ Add Village Information</h2>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-grid">
+                    <div>
+                        <label for="village_name">Village Name</label>
+                        <input type="text"
+                               id="village_name"
+                               name="village_name"
+                               placeholder="Enter village name"
+                               required>
+                    </div>
+
+                    <div>
+                        <label for="district">District</label>
+                        <input type="text"
+                               id="district"
+                               name="district"
+                               placeholder="Enter district"
+                               required>
+                    </div>
+
+                    <div>
+                        <label for="mandal">Mandal</label>
+                        <input type="text"
+                               id="mandal"
+                               name="mandal"
+                               placeholder="Enter mandal"
+                               required>
+                    </div>
+
+                    <div>
+                        <label for="population">Population</label>
+                        <input type="number"
+                               id="population"
+                               name="population"
+                               min="0"
+                               placeholder="Enter population"
+                               required>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button type="submit" class="btn primary">Save Village</button>
+                    <a href="{% url 'dashboard' %}" class="btn secondary">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </section>
+
+        <!-- VILLAGE TABLE -->
+        <section class="panel">
+            <h2>📋 Registered Villages</h2>
+
+            <form method="GET" class="search-form">
+                <input type="text"
+                       name="q"
+                       value="{{ search_query|default:'' }}"
+                       placeholder="Search village, district or mandal...">
+
+                <button type="submit" class="btn primary">Search</button>
+
+                <a href="{% url 'villages' %}" class="btn secondary">Reset</a>
+            </form>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Village Name</th>
+                            <th>District</th>
+                            <th>Mandal</th>
+                            <th>Population</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for village in page_obj %}
+                            <tr>
+                                <td>
+                                    {% if page_obj %}
+                                        {{ page_obj.start_index|add:forloop.counter0 }}
+                                    {% else %}
+                                        {{ forloop.counter }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ village.village_name }}</td>
+                                <td>{{ village.district }}</td>
+                                <td>{{ village.mandal }}</td>
+                                <td>{{ village.population }}</td>
+
+                                <td>
+                                    <div class="action-buttons">
+                                        <a href="{% url 'edit_village' village.id %}"
+                                           class="btn edit-btn">Edit</a>
+
+                                        <form action="{% url 'delete_village' village.id %}"
+                                              method="POST"
+                                              class="delete-form"
+                                              onsubmit="return confirm('Are you sure you want to delete this village?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn delete-btn">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="empty">
+                                    No village details found.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if page_obj.has_other_pages %}
+                <div class="pagination">
+                    <span>
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    <div class="page-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?q={{ search_query|urlencode }}&page=1">First</a>
+                            <a href="?q={{ search_query|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+
+                        <span class="current">{{ page_obj.number }}</span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?q={{ search_query|urlencode }}&page={{ page_obj.next_page_number }}">Next</a>
+                            <a href="?q={{ search_query|urlencode }}&page={{ page_obj.paginator.num_pages }}">Last</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+
+    </main>
+</div>
+</body>
+</html>
