@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-x3ir)@3327olh9ijxk4k6s!5^p)c^gsws=seve-((-g8qmh&kx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['village-election-management-system.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
